@@ -1,19 +1,27 @@
-import { Link, useNavigate} from 'react-router-dom';
-import { useContext } from 'react';
+import { Link} from 'react-router-dom';
+import { useContext, useEffect } from 'react';
 import AuthContext from '../Store/AuthContext';
 
 import classes from './MainNavigation.module.css';
 
 const MainNavigation = () => {
   const authCtx = useContext(AuthContext);
-  const navigate=useNavigate();
+  
 
   const isLoggedIn = authCtx.isLoggedIn;
 
   const logoutHandler =()=>{
     authCtx.logout()
-    navigate('./auth');
   }
+
+  useEffect(() => {
+    if (!authCtx.login) {
+      return;
+    }
+    setTimeout(() => {
+      authCtx.logout();
+    }, 5 * 60 * 1000);
+  }, [authCtx]);
 
 
   return (
